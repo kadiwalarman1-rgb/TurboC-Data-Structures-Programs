@@ -1,0 +1,2860 @@
+/* Program 1: Linear Search - Turbo C compatible */
+#include<stdio.h>
+#include<conio.h>
+
+#define MAX 10
+
+void l_search(int [], int, int);
+
+void main()
+{
+    int k[MAX + 1], n, i, x;
+    clrscr();
+
+    /* Step 1: Read number of elements.
+       Why: We must know how many valid array positions will be searched. */
+    printf("How many elements do you want in array (1-%d): ", MAX);
+    scanf("%d", &n);
+
+    if(n < 1 || n > MAX)
+    {
+        printf("Invalid number of elements.");
+        getch();
+        return;
+    }
+
+    /* Step 2: Read elements using positions 1 to n.
+       Why: The college algorithm uses 1-based indexing. */
+    printf("Enter elements:\n");
+    for(i = 1; i <= n; i++)
+        scanf("%d", &k[i]);
+
+    /* Step 3: Read the value to search.
+       Why: Linear search compares this value with each array element. */
+    printf("Enter the element you want to search: ");
+    scanf("%d", &x);
+
+    /* Step 4: Call linear search.
+       Why: Searching logic is kept in a separate function. */
+    l_search(k, n, x);
+
+    getch();
+}
+
+void l_search(int k[], int n, int x)
+{
+    int flag, loc;
+    flag = 1;
+
+    /* Step 5: Check every element from first to last.
+       Why: Linear search works sequentially and does not require sorting. */
+    for(loc = 1; loc <= n; loc++)
+    {
+        if(k[loc] == x)
+        {
+            printf("Search is successful. Element found at location %d", loc);
+            flag = 0;
+            break;
+        }
+    }
+
+    /* Step 6: If flag is still 1, no match was found.
+       Why: This reports unsuccessful search after checking the full list. */
+    if(flag == 1)
+        printf("Search is unsuccessful");
+}
+
+/* Program 2: Binary Search - Turbo C compatible */
+#include<stdio.h>
+#include<conio.h>
+
+#define MAX 15
+
+void b_search(int [], int, int);
+
+void main()
+{
+    int k[MAX + 1], n, i, x;
+    clrscr();
+
+    /* Step 1: Read number of elements.
+       Why: Binary search needs the valid lower and upper limits. */
+    printf("How many elements do you want in array (1-%d): ", MAX);
+    scanf("%d", &n);
+
+    if(n < 1 || n > MAX)
+    {
+        printf("Invalid number of elements.");
+        getch();
+        return;
+    }
+
+    /* Step 2: Read elements in ASCENDING order.
+       Why: Binary search works correctly only on a sorted list. */
+    printf("Enter elements in ascending order:\n");
+    for(i = 1; i <= n; i++)
+        scanf("%d", &k[i]);
+
+    /* Step 3: Verify that input is sorted.
+       Why: This prevents binary search from giving a wrong result. */
+    for(i = 2; i <= n; i++)
+    {
+        if(k[i] < k[i - 1])
+        {
+            printf("Error: Binary search requires ascending sorted data.");
+            getch();
+            return;
+        }
+    }
+
+    /* Step 4: Read target value. */
+    printf("Enter the element you want to search: ");
+    scanf("%d", &x);
+
+    b_search(k, n, x);
+    getch();
+}
+
+void b_search(int k[], int n, int x)
+{
+    int low, high, mid;
+    low = 1;
+    high = n;
+
+    /* Step 5: Repeatedly divide the search interval in half.
+       Why: This is the main idea of binary search. */
+    while(low <= high)
+    {
+        mid = (low + high) / 2;
+
+        if(x < k[mid])
+            high = mid - 1;
+        else if(x > k[mid])
+            low = mid + 1;
+        else
+        {
+            printf("Search is successful. Element found at location %d", mid);
+            return;
+        }
+    }
+
+    /* Step 6: low crossed high, so the value is not present. */
+    printf("Search is unsuccessful");
+}
+
+
+/* Program 3: Bubble Sort - Turbo C compatible */
+#include<stdio.h>
+#include<conio.h>
+
+#define MAX 10
+
+void bubble_sort(int [], int);
+
+void main()
+{
+    int k[MAX + 1], n, i;
+    clrscr();
+
+    /* Step 1: Read array size. */
+    printf("How many elements (1-%d): ", MAX);
+    scanf("%d", &n);
+
+    if(n < 1 || n > MAX)
+    {
+        printf("Invalid number of elements.");
+        getch();
+        return;
+    }
+
+    /* Step 2: Read array elements. */
+    printf("Enter elements in array:\n");
+    for(i = 1; i <= n; i++)
+        scanf("%d", &k[i]);
+
+    /* Step 3: Sort the array by bubble sort. */
+    bubble_sort(k, n);
+
+    /* Step 4: Display final sorted array. */
+    printf("Array sorted in ascending order: ");
+    for(i = 1; i <= n; i++)
+        printf("%d ", k[i]);
+
+    getch();
+}
+
+void bubble_sort(int k[], int n)
+{
+    int temp, i, pass, last, exchs;
+    last = n;
+
+    /* Step 5: Perform passes over the unsorted part.
+       Why: Each pass moves the largest remaining element to the end. */
+    for(pass = 1; pass <= n - 1; pass++)
+    {
+        exchs = 0;
+
+        /* Step 6: Compare adjacent pairs and swap when out of order. */
+        for(i = 1; i <= last - 1; i++)
+        {
+            if(k[i] > k[i + 1])
+            {
+                temp = k[i];
+                k[i] = k[i + 1];
+                k[i + 1] = temp;
+                exchs = exchs + 1;
+            }
+        }
+
+        /* Step 7: Stop early if no swap happened.
+           Why: No swap means the array is already sorted. */
+        if(exchs == 0)
+            return;
+
+        last = last - 1;
+    }
+}
+
+
+/* Program 4: Quick Sort (Partition Exchange Sort) - Turbo C compatible */
+#include<stdio.h>
+#include<conio.h>
+
+#define MAX 15
+
+void quick_sort(int [], int, int);
+
+void main()
+{
+    int k[MAX + 1], n, i;
+    clrscr();
+
+    /* Step 1: Read array size. */
+    printf("How many elements (1-%d): ", MAX);
+    scanf("%d", &n);
+
+    if(n < 1 || n > MAX)
+    {
+        printf("Invalid number of elements.");
+        getch();
+        return;
+    }
+
+    /* Step 2: Read input values. */
+    printf("Enter elements in array:\n");
+    for(i = 1; i <= n; i++)
+        scanf("%d", &k[i]);
+
+    /* Step 3: Sort complete range from 1 to n. */
+    quick_sort(k, 1, n);
+
+    /* Step 4: Display sorted values. */
+    printf("Array sorted in ascending order: ");
+    for(i = 1; i <= n; i++)
+        printf("%d ", k[i]);
+
+    getch();
+}
+
+void quick_sort(int k[], int lb, int ub)
+{
+    int i, j, temp, flag, key;
+
+    /* Step 5: Continue only if sub-array has at least two elements. */
+    if(lb < ub)
+    {
+        flag = 1;
+        i = lb;
+        j = ub + 1;
+        key = k[lb];
+
+        /* Step 6: Partition around the key value. */
+        while(flag == 1)
+        {
+            i = i + 1;
+
+            /* Bounds are checked first to avoid accessing outside the array. */
+            while(i <= ub && k[i] < key)
+                i = i + 1;
+
+            j = j - 1;
+            while(j >= lb && k[j] > key)
+                j = j - 1;
+
+            /* Step 7: Swap values that are on the wrong side of the key. */
+            if(i < j)
+            {
+                temp = k[i];
+                k[i] = k[j];
+                k[j] = temp;
+            }
+            else
+                flag = 0;
+        }
+
+        /* Step 8: Put key in its final correct position. */
+        temp = k[lb];
+        k[lb] = k[j];
+        k[j] = temp;
+
+        /* Step 9: Recursively sort left and right partitions. */
+        quick_sort(k, lb, j - 1);
+        quick_sort(k, j + 1, ub);
+    }
+}
+
+
+/* Program 5: Selection Sort - Turbo C compatible */
+#include<stdio.h>
+#include<conio.h>
+
+#define MAX 10
+
+void selection_sort(int [], int);
+
+void main()
+{
+    int k[MAX + 1], n, i;
+    clrscr();
+
+    /* Step 1: Read size and values. */
+    printf("How many elements (1-%d): ", MAX);
+    scanf("%d", &n);
+
+    if(n < 1 || n > MAX)
+    {
+        printf("Invalid number of elements.");
+        getch();
+        return;
+    }
+
+    printf("Enter elements in array:\n");
+    for(i = 1; i <= n; i++)
+        scanf("%d", &k[i]);
+
+    /* Step 2: Call selection sort. */
+    selection_sort(k, n);
+    getch();
+}
+
+void selection_sort(int k[], int n)
+{
+    int min_index, pass, j, i, temp;
+
+    /* Step 3: Select one position at a time. */
+    for(pass = 1; pass <= n - 1; pass++)
+    {
+        min_index = pass;
+
+        /* Step 4: Find the smallest value in the unsorted part. */
+        for(i = pass + 1; i <= n; i++)
+        {
+            if(k[i] < k[min_index])
+                min_index = i;
+        }
+
+        /* Step 5: Put the smallest value at current pass position. */
+        if(min_index != pass)
+        {
+            temp = k[pass];
+            k[pass] = k[min_index];
+            k[min_index] = temp;
+        }
+    }
+
+    /* Step 6: Display sorted list. */
+    printf("Sorted list is: ");
+    for(j = 1; j <= n; j++)
+        printf("%d ", k[j]);
+}
+
+
+/* Program 6: Insertion Sort - Turbo C compatible */
+#include<stdio.h>
+#include<conio.h>
+
+#define MAX 10
+
+void insertion_sort(int [], int);
+
+void main()
+{
+    int k[MAX + 1], n, i;
+    clrscr();
+
+    /* Step 1: Read number of elements. */
+    printf("How many elements (1-%d): ", MAX);
+    scanf("%d", &n);
+
+    if(n < 1 || n > MAX)
+    {
+        printf("Invalid number of elements.");
+        getch();
+        return;
+    }
+
+    /* Step 2: Read the unsorted array. */
+    printf("Enter elements in array:\n");
+    for(i = 1; i <= n; i++)
+        scanf("%d", &k[i]);
+
+    /* Step 3: Sort using insertion sort. */
+    insertion_sort(k, n);
+
+    /* Step 4: Display sorted list. */
+    printf("Sorted list is: ");
+    for(i = 1; i <= n; i++)
+        printf("%d ", k[i]);
+
+    getch();
+}
+
+void insertion_sort(int k[], int n)
+{
+    int pass, j, temp;
+
+    /* Step 5: Start from second element.
+       Why: A single first element is already considered sorted. */
+    for(pass = 2; pass <= n; pass++)
+    {
+        temp = k[pass];
+        j = pass - 1;
+
+        /* Step 6: Shift larger values one position to the right.
+           Why: This creates the correct place for temp. */
+        while(j >= 1 && temp < k[j])
+        {
+            k[j + 1] = k[j];
+            j = j - 1;
+        }
+
+        /* Step 7: Insert temp into its correct position. */
+        k[j + 1] = temp;
+    }
+}
+
+/* Program 7: Shell Sort - Turbo C compatible */
+#include<stdio.h>
+#include<conio.h>
+
+#define MAX 10
+
+void shell_sort(int [], int);
+
+void main()
+{
+    int k[MAX + 1], n, i;
+    clrscr();
+
+    /* Step 1: Read size and elements. */
+    printf("How many elements (1-%d): ", MAX);
+    scanf("%d", &n);
+
+    if(n < 1 || n > MAX)
+    {
+        printf("Invalid number of elements.");
+        getch();
+        return;
+    }
+
+    printf("Enter elements in array:\n");
+    for(i = 1; i <= n; i++)
+        scanf("%d", &k[i]);
+
+    /* Step 2: Call Shell sort. */
+    shell_sort(k, n);
+
+    /* Step 3: Display final sorted list. */
+    printf("Sorted list is: ");
+    for(i = 1; i <= n; i++)
+        printf("%d ", k[i]);
+
+    getch();
+}
+
+void shell_sort(int k[], int n)
+{
+    int gap, i, swap, temp;
+
+    /* Step 4: Start with half of array size as gap.
+       Why: Shell sort first compares distant elements. */
+    gap = n / 2;
+
+    while(gap > 0)
+    {
+        swap = 1;
+
+        /* Step 5: Repeat same gap until no swap occurs. */
+        while(swap == 1)
+        {
+            swap = 0;
+
+            for(i = 1; i <= n - gap; i++)
+            {
+                if(k[i] > k[i + gap])
+                {
+                    temp = k[i];
+                    k[i] = k[i + gap];
+                    k[i + gap] = temp;
+                    swap = 1;
+                }
+            }
+        }
+
+        /* Step 6: Reduce the gap.
+           Why: Final gap 1 finishes the array like insertion-style sorting. */
+        gap = gap / 2;
+    }
+}
+
+/* Program 8: Merge Sort - Turbo C compatible */
+#include<stdio.h>
+#include<conio.h>
+
+#define MAX 15
+
+int a[MAX + 1];
+
+void merge(int, int, int);
+void mergesort(int, int);
+
+void merge(int low, int mid, int high)
+{
+    int l1, l2, i;
+    int b[MAX + 1];
+
+    l1 = low;
+    l2 = mid + 1;
+    i = low;
+
+    /* Step 4: Compare both sorted halves.
+       Why: The smaller current value is copied first into temporary array. */
+    while(l1 <= mid && l2 <= high)
+    {
+        if(a[l1] <= a[l2])
+        {
+            b[i] = a[l1];
+            l1++;
+        }
+        else
+        {
+            b[i] = a[l2];
+            l2++;
+        }
+        i++;
+    }
+
+    /* Step 5: Copy any remaining values from left half. */
+    while(l1 <= mid)
+    {
+        b[i] = a[l1];
+        i++;
+        l1++;
+    }
+
+    /* Step 6: Copy any remaining values from right half. */
+    while(l2 <= high)
+    {
+        b[i] = a[l2];
+        i++;
+        l2++;
+    }
+
+    /* Step 7: Copy merged result back into original array. */
+    for(i = low; i <= high; i++)
+        a[i] = b[i];
+}
+
+void mergesort(int low, int high)
+{
+    int mid;
+
+    /* Step 3: Divide array until each part contains one element. */
+    if(low < high)
+    {
+        mid = (low + high) / 2;
+        mergesort(low, mid);
+        mergesort(mid + 1, high);
+        merge(low, mid, high);
+    }
+}
+
+void main()
+{
+    int i, n;
+    clrscr();
+
+    /* Step 1: Read size and elements. */
+    printf("How many elements (1-%d): ", MAX);
+    scanf("%d", &n);
+
+    if(n < 1 || n > MAX)
+    {
+        printf("Invalid number of elements.");
+        getch();
+        return;
+    }
+
+    printf("Enter elements in array:\n");
+    for(i = 1; i <= n; i++)
+        scanf("%d", &a[i]);
+
+    /* Step 2: Sort complete array recursively. */
+    mergesort(1, n);
+
+    /* Step 8: Display final sorted list. */
+    printf("Sorted list is: ");
+    for(i = 1; i <= n; i++)
+        printf("%d ", a[i]);
+
+    getch();
+}
+
+/* Program 9: Radix Sort - Turbo C compatible */
+#include<stdio.h>
+#include<conio.h>
+
+#define MAX 10
+
+int get_max(int [], int);
+void radix_sort(int [], int);
+
+void main()
+{
+    int i, n, a[MAX];
+    clrscr();
+
+    /* Step 1: Read number of items. */
+    printf("Enter the number of items to be sorted (1-%d): ", MAX);
+    scanf("%d", &n);
+
+    if(n < 1 || n > MAX)
+    {
+        printf("Invalid number of items.");
+        getch();
+        return;
+    }
+
+    /* Step 2: Read non-negative integers.
+       Why: This simple decimal radix-sort version uses buckets 0 to 9. */
+    printf("Enter non-negative items:\n");
+    for(i = 0; i < n; i++)
+    {
+        scanf("%d", &a[i]);
+        if(a[i] < 0)
+        {
+            printf("Negative numbers are not supported by this radix-sort version.");
+            getch();
+            return;
+        }
+    }
+
+    /* Step 3: Sort numbers digit by digit. */
+    radix_sort(a, n);
+
+    /* Step 4: Display sorted result. */
+    printf("\nSorted items: ");
+    for(i = 0; i < n; i++)
+        printf("%d ", a[i]);
+
+    getch();
+}
+
+int get_max(int a[], int n)
+{
+    int max, i;
+    max = a[0];
+
+    /* Step 5: Find largest value.
+       Why: Its digit count tells us how many radix passes are needed. */
+    for(i = 1; i < n; i++)
+    {
+        if(a[i] > max)
+            max = a[i];
+    }
+    return max;
+}
+
+void radix_sort(int a[], int n)
+{
+    int bucket[10][MAX];
+    int bucket_count[10];
+    int i, j, k, r, lar, pass, digit, divisor;
+
+    lar = get_max(a, n);
+    digit = 0;
+    divisor = 1;
+
+    /* Step 6: Count digits in largest value. */
+    if(lar == 0)
+        digit = 1;
+    else
+    {
+        while(lar > 0)
+        {
+            digit++;
+            lar = lar / 10;
+        }
+    }
+
+    /* Step 7: Process one decimal digit in each pass. */
+    for(pass = 0; pass < digit; pass++)
+    {
+        for(i = 0; i < 10; i++)
+            bucket_count[i] = 0;
+
+        /* Step 8: Put each number into the bucket of current digit. */
+        for(i = 0; i < n; i++)
+        {
+            r = (a[i] / divisor) % 10;
+            bucket[r][bucket_count[r]] = a[i];
+            bucket_count[r]++;
+        }
+
+        /* Step 9: Collect buckets back in order 0 to 9. */
+        i = 0;
+        for(k = 0; k < 10; k++)
+        {
+            for(j = 0; j < bucket_count[k]; j++)
+            {
+                a[i] = bucket[k][j];
+                i++;
+            }
+        }
+
+        divisor = divisor * 10;
+
+        printf("After pass %d: ", pass + 1);
+        for(i = 0; i < n; i++)
+            printf("%d ", a[i]);
+        printf("\n");
+    }
+}
+
+/* Program 10: Stack Operations - Turbo C compatible */
+#include<stdio.h>
+#include<conio.h>
+#include<stdlib.h>
+
+#define MAX 5
+
+/* MAX+1 is used because this program keeps stack positions from 1 to MAX. */
+int stack[MAX + 1];
+int top = 0;
+
+void push();
+void pop();
+void peep();
+void change();
+void disp();
+
+void main()
+{
+    int choice;
+    clrscr();
+
+menu:
+    /* Step 1: Show stack operation menu. */
+    printf("\n1. Push");
+    printf("\n2. Pop");
+    printf("\n3. Peep");
+    printf("\n4. Change");
+    printf("\n5. Exit");
+    printf("\nEnter your choice: ");
+    scanf("%d", &choice);
+
+    switch(choice)
+    {
+        case 1:
+            push();
+            disp();
+            goto menu;
+        case 2:
+            pop();
+            disp();
+            goto menu;
+        case 3:
+            peep();
+            disp();
+            goto menu;
+        case 4:
+            change();
+            disp();
+            goto menu;
+        case 5:
+            exit(0);
+        default:
+            printf("\nWrong choice.");
+            goto menu;
+    }
+}
+
+void push()
+{
+    int value;
+
+    /* Step 2: Check overflow before insertion.
+       Why: top cannot move beyond MAX. */
+    if(top >= MAX)
+    {
+        printf("\nStack overflow.\n");
+        return;
+    }
+
+    printf("Enter value to push: ");
+    scanf("%d", &value);
+
+    /* Step 3: Move top up and store the new value. */
+    top++;
+    stack[top] = value;
+}
+
+void pop()
+{
+    int value;
+
+    /* Step 4: Check underflow before deletion. */
+    if(top == 0)
+    {
+        printf("\nStack underflow.\n");
+        return;
+    }
+
+    value = stack[top];
+    stack[top] = 0;
+    top--;
+    printf("\n%d is deleted.\n", value);
+}
+
+void peep()
+{
+    int pos, index;
+
+    /* Step 5: Read position from top.
+       Why: Peep checks an element without removing it. */
+    printf("Enter position from top: ");
+    scanf("%d", &pos);
+
+    if(pos <= 0 || pos > top)
+    {
+        printf("Invalid position or stack underflow.\n");
+        return;
+    }
+
+    index = top - pos + 1;
+    printf("Element at position %d from top is %d\n", pos, stack[index]);
+}
+
+void change()
+{
+    int pos, value, index;
+
+    /* Step 6: Read position and replacement value. */
+    printf("Enter position from top to change: ");
+    scanf("%d", &pos);
+
+    if(pos <= 0 || pos > top)
+    {
+        printf("Invalid position or stack underflow.\n");
+        return;
+    }
+
+    printf("Enter new value: ");
+    scanf("%d", &value);
+
+    index = top - pos + 1;
+    stack[index] = value;
+}
+
+void disp()
+{
+    int i;
+
+    /* Step 7: Display only active stack elements. */
+    if(top == 0)
+    {
+        printf("\nStack is empty.\n");
+        return;
+    }
+
+    printf("\nStack contains: ");
+    for(i = top; i >= 1; i--)
+        printf("%d ", stack[i]);
+    printf("\n");
+}
+
+/* Program 11: Infix to Postfix Conversion - Turbo C compatible */
+#include<stdio.h>
+#include<conio.h>
+#include<ctype.h>
+
+#define MAX 50
+
+int priority(char);
+void push(char);
+char pop();
+
+int top = -1;
+char infix[MAX], postfix[MAX], stack[MAX];
+
+void main()
+{
+    int i, j;
+    char ch;
+    clrscr();
+
+    /* Step 1: Read infix expression without spaces.
+       Why: The converter scans one symbol at a time. */
+    printf("Enter infix expression: ");
+    scanf("%s", infix);
+
+    j = 0;
+
+    /* Step 2: Scan the expression from left to right. */
+    for(i = 0; infix[i] != '\0'; i++)
+    {
+        ch = infix[i];
+
+        /* Step 3: Operands go directly to postfix. */
+        if(isalnum(ch))
+        {
+            postfix[j] = ch;
+            j++;
+        }
+        /* Step 4: Opening bracket is pushed to stack. */
+        else if(ch == '(')
+        {
+            push(ch);
+        }
+        /* Step 5: Closing bracket pops until matching '('. */
+        else if(ch == ')')
+        {
+            while(top >= 0 && stack[top] != '(')
+            {
+                postfix[j] = pop();
+                j++;
+            }
+
+            if(top >= 0 && stack[top] == '(')
+                pop();
+            else
+            {
+                printf("Invalid expression: unmatched parenthesis.");
+                getch();
+                return;
+            }
+        }
+        /* Step 6: Handle operators according to precedence.
+           Why: Higher-precedence operators must appear earlier in postfix. */
+        else if(ch == '+' || ch == '-' || ch == '*' || ch == '/' || ch == '$')
+        {
+            while(top >= 0 && stack[top] != '(' &&
+                 (priority(stack[top]) > priority(ch) ||
+                 (priority(stack[top]) == priority(ch) && ch != '$')))
+            {
+                postfix[j] = pop();
+                j++;
+            }
+            push(ch);
+        }
+        else
+        {
+            printf("Invalid symbol in expression.");
+            getch();
+            return;
+        }
+    }
+
+    /* Step 7: Pop remaining operators from stack. */
+    while(top >= 0)
+    {
+        if(stack[top] == '(')
+        {
+            printf("Invalid expression: unmatched parenthesis.");
+            getch();
+            return;
+        }
+        postfix[j] = pop();
+        j++;
+    }
+
+    postfix[j] = '\0';
+
+    /* Step 8: Display converted postfix expression. */
+    printf("Converted postfix expression: %s", postfix);
+    getch();
+}
+
+void push(char ch)
+{
+    if(top < MAX - 1)
+    {
+        top++;
+        stack[top] = ch;
+    }
+}
+
+char pop()
+{
+    char ch;
+    ch = stack[top];
+    top--;
+    return ch;
+}
+
+int priority(char ch)
+{
+    if(ch == '+' || ch == '-')
+        return 1;
+    else if(ch == '*' || ch == '/')
+        return 2;
+    else if(ch == '$')
+        return 3;
+    else
+        return 0;
+}
+
+/* Program 12: Postfix Expression Evaluation - Turbo C compatible */
+#include<stdio.h>
+#include<conio.h>
+#include<math.h>
+#include<ctype.h>
+
+#define MAX 50
+
+int stack[MAX];
+int top = -1;
+
+void push(int);
+int pop();
+
+void main()
+{
+    char postfix[MAX];
+    int a, b, c, x, i;
+    clrscr();
+
+    /* Step 1: Read postfix expression without spaces.
+       Why: This version evaluates single-digit operands like 23+ or 82/. */
+    printf("Enter postfix expression: ");
+    scanf("%s", postfix);
+
+    /* Step 2: Scan every symbol in postfix expression. */
+    for(i = 0; postfix[i] != '\0'; i++)
+    {
+        /* Step 3: If symbol is a digit, convert it to integer and push. */
+        if(isdigit(postfix[i]))
+        {
+            x = postfix[i] - '0';
+            push(x);
+        }
+        else
+        {
+            /* Step 4: An operator needs two operands on the stack. */
+            if(top < 1)
+            {
+                printf("Invalid postfix expression.");
+                getch();
+                return;
+            }
+
+            a = pop();
+            b = pop();
+
+            /* Step 5: Apply operator in correct order b operator a. */
+            if(postfix[i] == '+')
+                c = b + a;
+            else if(postfix[i] == '-')
+                c = b - a;
+            else if(postfix[i] == '*')
+                c = b * a;
+            else if(postfix[i] == '/')
+            {
+                if(a == 0)
+                {
+                    printf("Division by zero is not allowed.");
+                    getch();
+                    return;
+                }
+                c = b / a;
+            }
+            else if(postfix[i] == '$')
+                c = (int)pow(b, a);
+            else
+            {
+                printf("Invalid operator in postfix expression.");
+                getch();
+                return;
+            }
+
+            /* Step 6: Push result back so it can be used by later operators. */
+            push(c);
+        }
+    }
+
+    /* Step 7: Exactly one value must remain after correct evaluation. */
+    if(top != 0)
+        printf("Invalid postfix expression.");
+    else
+        printf("Answer: %d", stack[top]);
+
+    getch();
+}
+
+void push(int x)
+{
+    if(top < MAX - 1)
+    {
+        top++;
+        stack[top] = x;
+    }
+}
+
+int pop()
+{
+    int x;
+    x = stack[top];
+    top--;
+    return x;
+}
+
+/* Program 13: Linear Queue Operations - Turbo C compatible */
+#include<stdio.h>
+#include<conio.h>
+#include<stdlib.h>
+
+#define MAX 5
+
+/* MAX+1 is required because queue positions are 1 to MAX. */
+int queue[MAX + 1];
+int rear = 0;
+int front = 0;
+
+void insert();
+void delet();
+void disp();
+
+void main()
+{
+    int choice;
+    clrscr();
+
+menu:
+    /* Step 1: Show queue operation menu. */
+    printf("\n1. Insert");
+    printf("\n2. Delete");
+    printf("\n3. Exit");
+    printf("\nEnter your choice: ");
+    scanf("%d", &choice);
+
+    switch(choice)
+    {
+        case 1:
+            insert();
+            disp();
+            goto menu;
+        case 2:
+            delet();
+            disp();
+            goto menu;
+        case 3:
+            exit(0);
+        default:
+            printf("\nWrong choice.");
+            goto menu;
+    }
+}
+
+void insert()
+{
+    int value;
+
+    /* Step 2: Check whether rear reached MAX.
+       Why: A linear queue cannot insert beyond the last array position. */
+    if(rear >= MAX)
+    {
+        printf("\nQueue overflow.\n");
+        return;
+    }
+
+    printf("Enter value to insert: ");
+    scanf("%d", &value);
+
+    /* Step 3: Move rear and store the new value. */
+    rear++;
+    queue[rear] = value;
+
+    /* Step 4: First insertion also initializes front. */
+    if(front == 0)
+        front = 1;
+}
+
+void delet()
+{
+    int value;
+
+    /* Step 5: front==0 means queue is empty. */
+    if(front == 0)
+    {
+        printf("\nQueue underflow.\n");
+        return;
+    }
+
+    value = queue[front];
+    queue[front] = 0;
+    printf("\n%d is deleted.\n", value);
+
+    /* Step 6: Reset both pointers after deleting last element. */
+    if(front == rear)
+    {
+        front = 0;
+        rear = 0;
+    }
+    else
+        front++;
+}
+
+void disp()
+{
+    int i;
+
+    /* Step 7: Display active queue elements from front to rear. */
+    if(front == 0)
+    {
+        printf("Queue is empty.\n");
+        return;
+    }
+
+    printf("Queue contains: ");
+    for(i = front; i <= rear; i++)
+        printf("%d ", queue[i]);
+    printf("\n");
+}
+
+/* Program 14: Double Ended Queue (Deque) - Turbo C compatible */
+#include<stdio.h>
+#include<conio.h>
+#include<stdlib.h>
+
+#define MAX 5
+
+/* Positions 1 to MAX are used, therefore size is MAX+1. */
+int d_queue[MAX + 1];
+int rear = 0;
+int front = 0;
+
+void r_insert();
+void r_delet();
+void l_insert();
+void l_delet();
+void disp();
+
+void main()
+{
+    int choice;
+    clrscr();
+
+menu:
+    /* Step 1: Show deque operation menu. */
+    printf("\n1. Right Insert");
+    printf("\n2. Right Delete");
+    printf("\n3. Left Insert");
+    printf("\n4. Left Delete");
+    printf("\n5. Exit");
+    printf("\nEnter your choice: ");
+    scanf("%d", &choice);
+
+    switch(choice)
+    {
+        case 1:
+            r_insert();
+            disp();
+            goto menu;
+        case 2:
+            r_delet();
+            disp();
+            goto menu;
+        case 3:
+            l_insert();
+            disp();
+            goto menu;
+        case 4:
+            l_delet();
+            disp();
+            goto menu;
+        case 5:
+            exit(0);
+        default:
+            printf("\nWrong choice.");
+            goto menu;
+    }
+}
+
+void r_insert()
+{
+    int value;
+
+    /* Step 2: Right insertion needs free space after rear. */
+    if(rear >= MAX)
+    {
+        printf("\nDeque overflow at right side.\n");
+        return;
+    }
+
+    printf("Enter value to insert at right: ");
+    scanf("%d", &value);
+
+    rear++;
+    d_queue[rear] = value;
+
+    if(front == 0)
+        front = 1;
+}
+
+void l_insert()
+{
+    int value;
+
+    /* Step 3: Left insertion needs free position before front. */
+    if(front == 1)
+    {
+        printf("\nDeque overflow at left side.\n");
+        return;
+    }
+
+    printf("Enter value to insert at left: ");
+    scanf("%d", &value);
+
+    /* Step 4: If empty, start from last slot so left insertion is valid. */
+    if(front == 0)
+    {
+        front = MAX;
+        rear = MAX;
+    }
+    else
+        front--;
+
+    d_queue[front] = value;
+}
+
+void l_delet()
+{
+    int value;
+
+    /* Step 5: Empty deque cannot delete. */
+    if(front == 0)
+    {
+        printf("\nDeque is empty.\n");
+        return;
+    }
+
+    value = d_queue[front];
+    d_queue[front] = 0;
+    printf("\n%d deleted from left.\n", value);
+
+    if(front == rear)
+    {
+        front = 0;
+        rear = 0;
+    }
+    else
+        front++;
+}
+
+void r_delet()
+{
+    int value;
+
+    /* Step 6: Delete the element at rear. */
+    if(front == 0)
+    {
+        printf("\nDeque is empty.\n");
+        return;
+    }
+
+    value = d_queue[rear];
+    d_queue[rear] = 0;
+    printf("\n%d deleted from right.\n", value);
+
+    if(front == rear)
+    {
+        front = 0;
+        rear = 0;
+    }
+    else
+        rear--;
+}
+
+void disp()
+{
+    int i;
+
+    /* Step 7: Display the logical deque from front to rear. */
+    if(front == 0)
+    {
+        printf("Deque is empty.\n");
+        return;
+    }
+
+    printf("Deque contains: ");
+    for(i = front; i <= rear; i++)
+        printf("%d ", d_queue[i]);
+    printf("\n");
+}
+
+/* Program 15: Circular Queue Operations - Turbo C compatible */
+#include<stdio.h>
+#include<conio.h>
+#include<stdlib.h>
+
+#define MAX 5
+
+/* Positions 1 to MAX are used. */
+int c_queue[MAX + 1];
+int rear = 0;
+int front = 0;
+
+void insert();
+void delet();
+void disp();
+
+void main()
+{
+    int choice;
+    clrscr();
+
+menu:
+    /* Step 1: Show circular queue menu. */
+    printf("\n1. Insert");
+    printf("\n2. Delete");
+    printf("\n3. Exit");
+    printf("\nEnter your choice: ");
+    scanf("%d", &choice);
+
+    switch(choice)
+    {
+        case 1:
+            insert();
+            disp();
+            goto menu;
+        case 2:
+            delet();
+            disp();
+            goto menu;
+        case 3:
+            exit(0);
+        default:
+            printf("\nWrong choice.");
+            goto menu;
+    }
+}
+
+void insert()
+{
+    int value;
+
+    /* Step 2: Check circular overflow condition.
+       Why: Queue is full when front is immediately after rear. */
+    if((front == 1 && rear == MAX) || (front == rear + 1))
+    {
+        printf("\nCircular queue overflow.\n");
+        return;
+    }
+
+    printf("Enter value to insert: ");
+    scanf("%d", &value);
+
+    /* Step 3: Move rear to correct circular position. */
+    if(front == 0)
+    {
+        front = 1;
+        rear = 1;
+    }
+    else if(rear == MAX)
+        rear = 1;
+    else
+        rear++;
+
+    c_queue[rear] = value;
+}
+
+void delet()
+{
+    int value;
+
+    /* Step 4: Check underflow before deletion. */
+    if(front == 0)
+    {
+        printf("\nCircular queue underflow.\n");
+        return;
+    }
+
+    value = c_queue[front];
+    c_queue[front] = 0;
+    printf("\n%d is deleted.\n", value);
+
+    /* Step 5: Update front in circular form. */
+    if(front == rear)
+    {
+        front = 0;
+        rear = 0;
+    }
+    else if(front == MAX)
+        front = 1;
+    else
+        front++;
+}
+
+void disp()
+{
+    int i;
+
+    /* Step 6: Traverse from front to rear with wrap-around. */
+    if(front == 0)
+    {
+        printf("Circular queue is empty.\n");
+        return;
+    }
+
+    printf("Circular queue contains: ");
+    i = front;
+    while(1)
+    {
+        printf("%d ", c_queue[i]);
+        if(i == rear)
+            break;
+        if(i == MAX)
+            i = 1;
+        else
+            i++;
+    }
+    printf("\n");
+}
+
+/* Program 16: Singly Linked List Operations - Turbo C compatible */
+#include<stdio.h>
+#include<conio.h>
+#include<stdlib.h>
+
+struct linklist
+{
+    int info;
+    struct linklist *next;
+};
+
+struct linklist *start;
+
+void create(struct linklist *);
+void display(struct linklist *);
+void f_insert();
+void l_insert();
+void m_insert();
+void f_delet();
+void l_delet();
+void m_delet();
+
+void main()
+{
+    int n;
+    clrscr();
+
+    /* Step 1: Create the first node.
+       Why: The original lab program starts by creating at least one node. */
+    start = (struct linklist *)malloc(sizeof(struct linklist));
+    if(start == NULL)
+    {
+        printf("Memory allocation failed.");
+        getch();
+        return;
+    }
+
+    create(start);
+
+    printf("\nCreated nodes are: ");
+    display(start);
+
+menu:
+    /* Step 2: Show linked-list operations. */
+    printf("\n1. Insert at first position");
+    printf("\n2. Insert at last position");
+    printf("\n3. Insert at desired position");
+    printf("\n4. Delete first node");
+    printf("\n5. Delete last node");
+    printf("\n6. Delete desired position");
+    printf("\n7. Exit");
+    printf("\nEnter your choice: ");
+    scanf("%d", &n);
+
+    switch(n)
+    {
+        case 1:
+            f_insert();
+            display(start);
+            goto menu;
+        case 2:
+            l_insert();
+            display(start);
+            goto menu;
+        case 3:
+            m_insert();
+            display(start);
+            goto menu;
+        case 4:
+            f_delet();
+            display(start);
+            goto menu;
+        case 5:
+            l_delet();
+            display(start);
+            goto menu;
+        case 6:
+            m_delet();
+            display(start);
+            goto menu;
+        case 7:
+            exit(0);
+        default:
+            printf("\nWrong choice.");
+            goto menu;
+    }
+}
+
+void create(struct linklist *ptr)
+{
+    char ch;
+
+    /* Step 3: Fill one node at a time.
+       Why: Each node stores data and a pointer to the next node. */
+    do
+    {
+        printf("\nEnter node data: ");
+        scanf("%d", &ptr->info);
+
+        printf("Do you want to add another node? Press y: ");
+        fflush(stdin);
+        ch = getchar();
+
+        if(ch == 'y' || ch == 'Y')
+        {
+            ptr->next = (struct linklist *)malloc(sizeof(struct linklist));
+            if(ptr->next == NULL)
+            {
+                printf("Memory allocation failed.");
+                ptr->next = NULL;
+                return;
+            }
+            ptr = ptr->next;
+        }
+    }
+    while(ch == 'y' || ch == 'Y');
+
+    /* Step 4: Last node points to NULL to mark end of list. */
+    ptr->next = NULL;
+}
+
+void display(struct linklist *ptr)
+{
+    /* Step 5: Traverse from start until NULL. */
+    printf("\nLinked list contains: ");
+
+    if(ptr == NULL)
+    {
+        printf("EMPTY");
+        return;
+    }
+
+    while(ptr != NULL)
+    {
+        printf("%d", ptr->info);
+        if(ptr->next != NULL)
+            printf(" -> ");
+        ptr = ptr->next;
+    }
+}
+
+void f_insert()
+{
+    struct linklist *new1;
+
+    /* Step 6: Allocate a new node and place it before start. */
+    new1 = (struct linklist *)malloc(sizeof(struct linklist));
+    if(new1 == NULL)
+    {
+        printf("Memory allocation failed.");
+        return;
+    }
+
+    printf("Enter data: ");
+    scanf("%d", &new1->info);
+
+    new1->next = start;
+    start = new1;
+}
+
+void l_insert()
+{
+    struct linklist *new1, *ptr;
+
+    /* Step 7: Create a node whose next pointer is NULL. */
+    new1 = (struct linklist *)malloc(sizeof(struct linklist));
+    if(new1 == NULL)
+    {
+        printf("Memory allocation failed.");
+        return;
+    }
+
+    printf("Enter data: ");
+    scanf("%d", &new1->info);
+    new1->next = NULL;
+
+    if(start == NULL)
+    {
+        start = new1;
+        return;
+    }
+
+    /* Step 8: Move to last node and connect new node. */
+    ptr = start;
+    while(ptr->next != NULL)
+        ptr = ptr->next;
+
+    ptr->next = new1;
+}
+
+void m_insert()
+{
+    struct linklist *ptr, *new1, *prev;
+    int m, i;
+
+    printf("Enter position to insert: ");
+    scanf("%d", &m);
+
+    if(m < 1)
+    {
+        printf("Invalid position.");
+        return;
+    }
+
+    new1 = (struct linklist *)malloc(sizeof(struct linklist));
+    if(new1 == NULL)
+    {
+        printf("Memory allocation failed.");
+        return;
+    }
+
+    printf("Enter data of new node: ");
+    scanf("%d", &new1->info);
+
+    /* Step 9: Position 1 is the same as first insertion. */
+    if(m == 1)
+    {
+        new1->next = start;
+        start = new1;
+        return;
+    }
+
+    /* Step 10: Reach the node just before the requested position. */
+    ptr = start;
+    prev = NULL;
+    i = 1;
+
+    while(i < m && ptr != NULL)
+    {
+        prev = ptr;
+        ptr = ptr->next;
+        i++;
+    }
+
+    if(i != m || prev == NULL)
+    {
+        printf("Invalid position.");
+        free(new1);
+        return;
+    }
+
+    new1->next = ptr;
+    prev->next = new1;
+}
+
+void f_delet()
+{
+    struct linklist *ptr;
+
+    /* Step 11: Check empty list before deleting first node. */
+    if(start == NULL)
+    {
+        printf("\nList is empty.");
+        return;
+    }
+
+    ptr = start;
+    start = start->next;
+    printf("\nDeleted node is %d\n", ptr->info);
+    free(ptr);
+}
+
+void l_delet()
+{
+    struct linklist *ptr, *prev;
+
+    if(start == NULL)
+    {
+        printf("\nList is empty.");
+        return;
+    }
+
+    /* Step 12: If only one node exists, make start NULL. */
+    if(start->next == NULL)
+    {
+        printf("\nDeleted node is %d\n", start->info);
+        free(start);
+        start = NULL;
+        return;
+    }
+
+    /* Step 13: Reach last node while keeping previous node. */
+    prev = NULL;
+    ptr = start;
+    while(ptr->next != NULL)
+    {
+        prev = ptr;
+        ptr = ptr->next;
+    }
+
+    prev->next = NULL;
+    printf("\nDeleted node is %d\n", ptr->info);
+    free(ptr);
+}
+
+void m_delet()
+{
+    struct linklist *ptr, *prev;
+    int m, i;
+
+    if(start == NULL)
+    {
+        printf("\nList is empty.");
+        return;
+    }
+
+    printf("Enter position to delete: ");
+    scanf("%d", &m);
+
+    if(m < 1)
+    {
+        printf("Invalid position.");
+        return;
+    }
+
+    /* Step 14: Handle first node separately. */
+    if(m == 1)
+    {
+        ptr = start;
+        start = start->next;
+        printf("\nDeleted node is %d\n", ptr->info);
+        free(ptr);
+        return;
+    }
+
+    /* Step 15: Find node at requested position. */
+    ptr = start;
+    prev = NULL;
+    i = 1;
+
+    while(i < m && ptr != NULL)
+    {
+        prev = ptr;
+        ptr = ptr->next;
+        i++;
+    }
+
+    if(ptr == NULL || i != m)
+    {
+        printf("Invalid position.");
+        return;
+    }
+
+    prev->next = ptr->next;
+    printf("\nDeleted node is %d\n", ptr->info);
+    free(ptr);
+}
+
+/* Program 17: Doubly Linked List Operations - Turbo C compatible */
+#include<stdio.h>
+#include<conio.h>
+#include<stdlib.h>
+
+struct dlist
+{
+    struct dlist *prev;
+    int info;
+    struct dlist *next;
+};
+
+struct dlist *l, *r;
+
+void create(struct dlist *);
+void display_l(struct dlist *);
+void display_r(struct dlist *);
+void finsert();
+void linsert();
+void deinsert();
+void fdelete();
+void ldelete();
+void mdelete();
+
+void main()
+{
+    int n;
+    clrscr();
+
+    /* Step 1: Allocate first node.
+       Why: l points to first node and r will point to last node. */
+    l = (struct dlist *)malloc(sizeof(struct dlist));
+    if(l == NULL)
+    {
+        printf("Memory allocation failed.");
+        getch();
+        return;
+    }
+
+    l->prev = NULL;
+    create(l);
+
+    printf("\nForward traversal: ");
+    display_l(l);
+    printf("\nBackward traversal: ");
+    display_r(r);
+
+menu:
+    /* Step 2: Show doubly-linked-list operation menu. */
+    printf("\n1. Insert at first position");
+    printf("\n2. Insert at last position");
+    printf("\n3. Insert at desired position");
+    printf("\n4. Delete first node");
+    printf("\n5. Delete last node");
+    printf("\n6. Delete desired position");
+    printf("\n7. Exit");
+    printf("\nEnter your choice: ");
+    scanf("%d", &n);
+
+    switch(n)
+    {
+        case 1:
+            finsert();
+            display_l(l);
+            goto menu;
+        case 2:
+            linsert();
+            display_l(l);
+            goto menu;
+        case 3:
+            deinsert();
+            display_l(l);
+            goto menu;
+        case 4:
+            fdelete();
+            display_l(l);
+            goto menu;
+        case 5:
+            ldelete();
+            display_l(l);
+            goto menu;
+        case 6:
+            mdelete();
+            display_l(l);
+            goto menu;
+        case 7:
+            exit(0);
+        default:
+            printf("\nWrong choice.");
+            goto menu;
+    }
+}
+
+void create(struct dlist *ptr)
+{
+    char ch;
+
+    /* Step 3: Create nodes and connect both next and prev links. */
+    do
+    {
+        printf("\nEnter node data: ");
+        scanf("%d", &ptr->info);
+
+        printf("Do you want to continue? Press y: ");
+        fflush(stdin);
+        ch = getchar();
+
+        if(ch == 'y' || ch == 'Y')
+        {
+            ptr->next = (struct dlist *)malloc(sizeof(struct dlist));
+            if(ptr->next == NULL)
+            {
+                printf("Memory allocation failed.");
+                ptr->next = NULL;
+                r = ptr;
+                return;
+            }
+            ptr->next->prev = ptr;
+            ptr = ptr->next;
+        }
+    }
+    while(ch == 'y' || ch == 'Y');
+
+    /* Step 4: Last node has no next node; save it in r. */
+    ptr->next = NULL;
+    r = ptr;
+}
+
+void display_l(struct dlist *ptr)
+{
+    printf("\nList: ");
+    if(ptr == NULL)
+    {
+        printf("EMPTY");
+        return;
+    }
+
+    /* Step 5: Forward traversal follows next pointers. */
+    while(ptr != NULL)
+    {
+        printf("%d", ptr->info);
+        if(ptr->next != NULL)
+            printf(" <-> ");
+        ptr = ptr->next;
+    }
+}
+
+void display_r(struct dlist *ptr)
+{
+    printf("\nReverse list: ");
+    if(ptr == NULL)
+    {
+        printf("EMPTY");
+        return;
+    }
+
+    /* Step 6: Backward traversal follows prev pointers. */
+    while(ptr != NULL)
+    {
+        printf("%d", ptr->info);
+        if(ptr->prev != NULL)
+            printf(" <-> ");
+        ptr = ptr->prev;
+    }
+}
+
+void finsert()
+{
+    struct dlist *new1;
+
+    new1 = (struct dlist *)malloc(sizeof(struct dlist));
+    if(new1 == NULL)
+    {
+        printf("Memory allocation failed.");
+        return;
+    }
+
+    printf("Enter data: ");
+    scanf("%d", &new1->info);
+
+    /* Step 7: New node becomes first; old first points back to it. */
+    new1->prev = NULL;
+    new1->next = l;
+
+    if(l != NULL)
+        l->prev = new1;
+    else
+        r = new1;
+
+    l = new1;
+}
+
+void linsert()
+{
+    struct dlist *new1;
+
+    new1 = (struct dlist *)malloc(sizeof(struct dlist));
+    if(new1 == NULL)
+    {
+        printf("Memory allocation failed.");
+        return;
+    }
+
+    printf("Enter data: ");
+    scanf("%d", &new1->info);
+
+    /* Step 8: New node becomes last and links back to old last. */
+    new1->next = NULL;
+    new1->prev = r;
+
+    if(r != NULL)
+        r->next = new1;
+    else
+        l = new1;
+
+    r = new1;
+}
+
+void deinsert()
+{
+    struct dlist *ptr, *new1;
+    int m, i;
+
+    printf("Enter position to insert: ");
+    scanf("%d", &m);
+
+    if(m < 1)
+    {
+        printf("Invalid position.");
+        return;
+    }
+
+    if(m == 1)
+    {
+        finsert();
+        return;
+    }
+
+    /* Step 9: Move ptr to the node currently at requested position. */
+    ptr = l;
+    i = 1;
+    while(i < m && ptr != NULL)
+    {
+        ptr = ptr->next;
+        i++;
+    }
+
+    /* Position exactly after last node means append at end. */
+    if(ptr == NULL)
+    {
+        if(i == m && r != NULL)
+        {
+            linsert();
+            return;
+        }
+        printf("Invalid position.");
+        return;
+    }
+
+    new1 = (struct dlist *)malloc(sizeof(struct dlist));
+    if(new1 == NULL)
+    {
+        printf("Memory allocation failed.");
+        return;
+    }
+
+    printf("Enter data of new node: ");
+    scanf("%d", &new1->info);
+
+    /* Step 10: Connect new node in both directions. */
+    new1->next = ptr;
+    new1->prev = ptr->prev;
+    ptr->prev->next = new1;
+    ptr->prev = new1;
+}
+
+void fdelete()
+{
+    struct dlist *ptr;
+
+    /* Step 11: Check empty list before deleting first node. */
+    if(l == NULL)
+    {
+        printf("\nList is empty.");
+        return;
+    }
+
+    ptr = l;
+    printf("\nDeleted node is %d\n", ptr->info);
+
+    l = l->next;
+    if(l != NULL)
+        l->prev = NULL;
+    else
+        r = NULL;
+
+    free(ptr);
+}
+
+void ldelete()
+{
+    struct dlist *ptr;
+
+    if(r == NULL)
+    {
+        printf("\nList is empty.");
+        return;
+    }
+
+    /* Step 12: Remove last node and move r one node left. */
+    ptr = r;
+    printf("\nDeleted node is %d\n", ptr->info);
+
+    r = r->prev;
+    if(r != NULL)
+        r->next = NULL;
+    else
+        l = NULL;
+
+    free(ptr);
+}
+
+void mdelete()
+{
+    struct dlist *ptr;
+    int m, i;
+
+    if(l == NULL)
+    {
+        printf("\nList is empty.");
+        return;
+    }
+
+    printf("Enter position to delete: ");
+    scanf("%d", &m);
+
+    if(m < 1)
+    {
+        printf("Invalid position.");
+        return;
+    }
+
+    /* Step 13: Locate the exact node to delete. */
+    ptr = l;
+    i = 1;
+    while(i < m && ptr != NULL)
+    {
+        ptr = ptr->next;
+        i++;
+    }
+
+    if(ptr == NULL || i != m)
+    {
+        printf("Invalid position.");
+        return;
+    }
+
+    if(ptr == l)
+    {
+        fdelete();
+        return;
+    }
+
+    if(ptr == r)
+    {
+        ldelete();
+        return;
+    }
+
+    /* Step 14: Bypass the middle node in both directions. */
+    ptr->prev->next = ptr->next;
+    ptr->next->prev = ptr->prev;
+    printf("\nDeleted node is %d\n", ptr->info);
+    free(ptr);
+}
+
+/* Program 18: Sorted Singly Linked List - Turbo C compatible */
+#include<stdio.h>
+#include<conio.h>
+#include<stdlib.h>
+
+struct list
+{
+    int info;
+    struct list *next;
+};
+
+struct list *start;
+
+void sorted();
+void display(struct list *);
+
+void main()
+{
+    int choice;
+    clrscr();
+    start = NULL;
+
+menu:
+    /* Step 1: Show menu.
+       Why: Each insertion automatically keeps the list sorted. */
+    printf("\n1. Insert item in sorted order");
+    printf("\n2. Exit");
+    printf("\nEnter your choice: ");
+    scanf("%d", &choice);
+
+    switch(choice)
+    {
+        case 1:
+            sorted();
+            display(start);
+            goto menu;
+        case 2:
+            exit(0);
+        default:
+            printf("\nWrong choice.");
+            goto menu;
+    }
+}
+
+void sorted()
+{
+    struct list *new1, *save, *ptr;
+    int item;
+
+    /* Step 2: Allocate and fill a new node. */
+    new1 = (struct list *)malloc(sizeof(struct list));
+    if(new1 == NULL)
+    {
+        printf("Memory allocation failed.");
+        return;
+    }
+
+    printf("Enter an item: ");
+    scanf("%d", &item);
+    new1->info = item;
+
+    /* Step 3: Empty list means new node becomes first node. */
+    if(start == NULL)
+    {
+        new1->next = NULL;
+        start = new1;
+        return;
+    }
+
+    /* Step 4: If item is smaller than first node, insert at beginning. */
+    if(item < start->info)
+    {
+        new1->next = start;
+        start = new1;
+        return;
+    }
+
+    /* Step 5: Find the first node greater than the new item. */
+    save = start;
+    ptr = start->next;
+
+    while(ptr != NULL)
+    {
+        if(item < ptr->info)
+        {
+            new1->next = ptr;
+            save->next = new1;
+            return;
+        }
+
+        save = ptr;
+        ptr = ptr->next;
+    }
+
+    /* Step 6: No greater item was found, so append at end. */
+    new1->next = NULL;
+    save->next = new1;
+}
+
+void display(struct list *p)
+{
+    /* Step 7: Traverse the already-sorted list from start to NULL. */
+    printf("\nSorted linked list: ");
+    while(p != NULL)
+    {
+        printf("%d ", p->info);
+        p = p->next;
+    }
+}
+
+/* Program 19: Binary Search Tree Operations - Turbo C compatible */
+#include<stdio.h>
+#include<conio.h>
+#include<stdlib.h>
+
+struct node
+{
+    struct node *lptr;
+    int info;
+    struct node *rptr;
+};
+
+struct node *t;
+struct node *loc;
+struct node *par;
+int item;
+
+struct node *create(int, struct node *);
+void display(int, struct node *);
+void preorder(struct node *);
+void postorder(struct node *);
+void inorder(struct node *);
+void search(struct node *);
+void insert();
+void delet();
+void casea(struct node *, struct node *);
+void caseb(struct node *, struct node *);
+
+void main()
+{
+    int info, choice;
+    char ch;
+    clrscr();
+    t = NULL;
+
+    /* Step 1: Create the initial BST.
+       Why: Each value is placed left if smaller and right otherwise. */
+    printf("Create the binary search tree.\n");
+    do
+    {
+        printf("Enter node info: ");
+        scanf("%d", &info);
+        t = create(info, t);
+
+        printf("\nCurrent tree:\n");
+        display(1, t);
+
+        printf("\nDo you want to add more nodes? Press y: ");
+        fflush(stdin);
+        ch = getchar();
+    }
+    while(ch == 'y' || ch == 'Y');
+
+menu:
+    /* Step 2: Show BST operation menu. */
+    printf("\n1. Preorder traversal");
+    printf("\n2. Postorder traversal");
+    printf("\n3. Inorder traversal");
+    printf("\n4. Insert");
+    printf("\n5. Delete");
+    printf("\n6. Exit");
+    printf("\nEnter your choice: ");
+    scanf("%d", &choice);
+
+    switch(choice)
+    {
+        case 1:
+            printf("\nPreorder traversal: ");
+            preorder(t);
+            goto menu;
+        case 2:
+            printf("\nPostorder traversal: ");
+            postorder(t);
+            goto menu;
+        case 3:
+            printf("\nInorder traversal: ");
+            inorder(t);
+            goto menu;
+        case 4:
+            insert();
+            printf("\nTree after insertion:\n");
+            display(1, t);
+            goto menu;
+        case 5:
+            delet();
+            printf("\nTree after deletion:\n");
+            display(1, t);
+            goto menu;
+        case 6:
+            exit(0);
+        default:
+            printf("\nWrong choice.");
+            goto menu;
+    }
+}
+
+struct node *create(int info, struct node *nod)
+{
+    /* Step 3: Allocate a node when an empty tree position is reached. */
+    if(nod == NULL)
+    {
+        nod = (struct node *)malloc(sizeof(struct node));
+        if(nod == NULL)
+        {
+            printf("Memory allocation failed.");
+            return NULL;
+        }
+
+        nod->info = info;
+        nod->lptr = NULL;
+        nod->rptr = NULL;
+        return nod;
+    }
+
+    /* Step 4: Recursively choose left or right subtree. */
+    if(info < nod->info)
+        nod->lptr = create(info, nod->lptr);
+    else
+        nod->rptr = create(info, nod->rptr);
+
+    return nod;
+}
+
+void preorder(struct node *nod)
+{
+    /* Step 5: Preorder = Root, Left, Right. */
+    if(nod != NULL)
+    {
+        printf("%d ", nod->info);
+        preorder(nod->lptr);
+        preorder(nod->rptr);
+    }
+}
+
+void postorder(struct node *nod)
+{
+    /* Step 6: Postorder = Left, Right, Root. */
+    if(nod != NULL)
+    {
+        postorder(nod->lptr);
+        postorder(nod->rptr);
+        printf("%d ", nod->info);
+    }
+}
+
+void inorder(struct node *nod)
+{
+    /* Step 7: Inorder = Left, Root, Right.
+       Why: For BST this prints values in sorted order. */
+    if(nod != NULL)
+    {
+        inorder(nod->lptr);
+        printf("%d ", nod->info);
+        inorder(nod->rptr);
+    }
+}
+
+void display(int level, struct node *p)
+{
+    int i;
+
+    if(p != NULL)
+    {
+        display(level + 1, p->rptr);
+
+        for(i = 1; i < level; i++)
+            printf("   ");
+        printf("%d\n", p->info);
+
+        display(level + 1, p->lptr);
+    }
+}
+
+void search(struct node *root)
+{
+    struct node *p, *parent;
+
+    /* Step 8: Search keeps both current node and its parent.
+       Why: Insert and delete need the parent link. */
+    loc = NULL;
+    par = NULL;
+    p = root;
+    parent = NULL;
+
+    while(p != NULL)
+    {
+        if(item == p->info)
+        {
+            loc = p;
+            par = parent;
+            return;
+        }
+
+        parent = p;
+        if(item < p->info)
+            p = p->lptr;
+        else
+            p = p->rptr;
+    }
+
+    par = parent;
+}
+
+void insert()
+{
+    struct node *new1;
+
+    printf("Enter item to insert: ");
+    scanf("%d", &item);
+
+    search(t);
+
+    /* Step 9: Do not insert a duplicate value. */
+    if(loc != NULL)
+    {
+        printf("Item is already in the tree.\n");
+        return;
+    }
+
+    new1 = (struct node *)malloc(sizeof(struct node));
+    if(new1 == NULL)
+    {
+        printf("Memory allocation failed.");
+        return;
+    }
+
+    new1->info = item;
+    new1->lptr = NULL;
+    new1->rptr = NULL;
+
+    /* Step 10: Attach new node to parent or make it new root. */
+    if(par == NULL)
+        t = new1;
+    else if(item < par->info)
+        par->lptr = new1;
+    else
+        par->rptr = new1;
+}
+
+void casea(struct node *node_to_delete, struct node *parent)
+{
+    struct node *child;
+
+    /* Step 11: Case A handles a leaf or a node with one child. */
+    if(node_to_delete->lptr == NULL && node_to_delete->rptr == NULL)
+        child = NULL;
+    else if(node_to_delete->lptr != NULL)
+        child = node_to_delete->lptr;
+    else
+        child = node_to_delete->rptr;
+
+    if(parent == NULL)
+        t = child;
+    else if(node_to_delete == parent->lptr)
+        parent->lptr = child;
+    else
+        parent->rptr = child;
+
+    free(node_to_delete);
+}
+
+void caseb(struct node *node_to_delete, struct node *parent)
+{
+    struct node *suc, *parsuc;
+
+    /* Step 12: Case B handles a node with two children.
+       Why: We replace it with its inorder successor. */
+    parsuc = node_to_delete;
+    suc = node_to_delete->rptr;
+
+    while(suc->lptr != NULL)
+    {
+        parsuc = suc;
+        suc = suc->lptr;
+    }
+
+    /* Step 13: Detach successor from its old position. */
+    if(parsuc != node_to_delete)
+    {
+        parsuc->lptr = suc->rptr;
+        suc->rptr = node_to_delete->rptr;
+    }
+
+    /* Step 14: Successor takes deleted node's left subtree. */
+    suc->lptr = node_to_delete->lptr;
+
+    /* Step 15: Connect successor to deleted node's parent or root. */
+    if(parent == NULL)
+        t = suc;
+    else if(node_to_delete == parent->lptr)
+        parent->lptr = suc;
+    else
+        parent->rptr = suc;
+
+    free(node_to_delete);
+}
+
+void delet()
+{
+    printf("Enter item to delete: ");
+    scanf("%d", &item);
+
+    search(t);
+
+    /* Step 16: Stop if item is not present. */
+    if(loc == NULL)
+    {
+        printf("Item is not in the tree.\n");
+        return;
+    }
+
+    /* Step 17: Choose deletion case based on number of children. */
+    if(loc->lptr != NULL && loc->rptr != NULL)
+        caseb(loc, par);
+    else
+        casea(loc, par);
+
+    printf("Item deleted successfully.\n");
+}
+
+/* Program 20: Graph Traversal using BFS and DFS - Turbo C compatible */
+#include<stdio.h>
+#include<conio.h>
+#include<stdlib.h>
+
+#define MAX 10
+
+/* MAX+1 is used because vertices are numbered from 1 to MAX. */
+int adj[MAX + 1][MAX + 1];
+int visited[MAX + 1];
+int queue[MAX + 1];
+int front = 0, rear = 0;
+
+void add_edge(int, int);
+void BFS(int, int);
+void DFS(int, int);
+void dfsdetail(int, int);
+
+void add_edge(int u, int v)
+{
+    /* Step 4: Store an undirected edge in both directions. */
+    adj[u][v] = 1;
+    adj[v][u] = 1;
+}
+
+void BFS(int start, int n)
+{
+    int i, current;
+
+    front = 0;
+    rear = 0;
+
+    /* Step 6: Mark every vertex unvisited before BFS. */
+    for(i = 1; i <= n; i++)
+        visited[i] = 0;
+
+    /* Step 7: Mark start visited and put it into queue. */
+    visited[start] = 1;
+    rear++;
+    queue[rear] = start;
+
+    printf("BFS Traversal: ");
+
+    /* Step 8: Remove one vertex at a time and visit its unvisited neighbors. */
+    while(front != rear)
+    {
+        front++;
+        current = queue[front];
+        printf("%d ", current);
+
+        for(i = 1; i <= n; i++)
+        {
+            if(adj[current][i] == 1 && visited[i] == 0)
+            {
+                visited[i] = 1;
+                rear++;
+                queue[rear] = i;
+            }
+        }
+    }
+    printf("\n");
+}
+
+void dfsdetail(int v, int n)
+{
+    int i;
+
+    /* Step 10: Mark current vertex visited and print it. */
+    visited[v] = 1;
+    printf("%d ", v);
+
+    /* Step 11: Recursively visit each unvisited adjacent vertex. */
+    for(i = 1; i <= n; i++)
+    {
+        if(adj[v][i] == 1 && visited[i] == 0)
+            dfsdetail(i, n);
+    }
+}
+
+void DFS(int start, int n)
+{
+    int i;
+
+    /* Step 9: Clear visited array before DFS. */
+    for(i = 1; i <= n; i++)
+        visited[i] = 0;
+
+    printf("DFS Traversal: ");
+    dfsdetail(start, n);
+    printf("\n");
+}
+
+void main()
+{
+    int n, e, u, v, choice, start;
+    int i, j;
+    clrscr();
+
+    /* Step 1: Read number of vertices and keep it inside array limit. */
+    printf("Enter number of vertices (1-%d): ", MAX);
+    scanf("%d", &n);
+
+    if(n < 1 || n > MAX)
+    {
+        printf("Invalid number of vertices.");
+        getch();
+        return;
+    }
+
+    /* Step 2: Initialize adjacency matrix to zero.
+       Why: Zero means no edge is present initially. */
+    for(i = 1; i <= n; i++)
+        for(j = 1; j <= n; j++)
+            adj[i][j] = 0;
+
+    /* Step 3: Read graph edges. */
+    printf("Enter number of edges: ");
+    scanf("%d", &e);
+
+    if(e < 0 || e > (n * (n - 1)) / 2)
+    {
+        printf("Invalid number of edges for a simple undirected graph.");
+        getch();
+        return;
+    }
+
+    for(i = 1; i <= e; i++)
+    {
+        printf("Enter edge %d (u v): ", i);
+        scanf("%d %d", &u, &v);
+
+        if(u < 1 || u > n || v < 1 || v > n)
+        {
+            printf("Invalid edge. Enter vertices between 1 and %d.\n", n);
+            i--;
+            continue;
+        }
+
+        add_edge(u, v);
+    }
+
+    do
+    {
+        /* Step 5: Let the user choose BFS or DFS. */
+        printf("\n1. BFS");
+        printf("\n2. DFS");
+        printf("\n3. Exit");
+        printf("\nEnter your choice: ");
+        scanf("%d", &choice);
+
+        if(choice == 1 || choice == 2)
+        {
+            printf("Enter starting vertex (1 to %d): ", n);
+            scanf("%d", &start);
+
+            if(start < 1 || start > n)
+            {
+                printf("Invalid starting vertex.\n");
+                continue;
+            }
+
+            if(choice == 1)
+                BFS(start, n);
+            else
+                DFS(start, n);
+        }
+        else if(choice != 3)
+            printf("Wrong choice.\n");
+    }
+    while(choice != 3);
+
+    getch();
+}
